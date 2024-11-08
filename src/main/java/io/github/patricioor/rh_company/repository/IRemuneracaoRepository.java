@@ -11,4 +11,6 @@ import java.util.UUID;
 public interface IRemuneracaoRepository extends JpaRepository<Remuneracao, UUID> {
     List<Remuneracao> findByFuncionarioId(UUID id);
     List<Remuneracao> findByTipo(String tipo);
+    void UpdateRemuneracao(UUID id, Remuneracao remuneracao);
+
 }

@@ -12,5 +12,5 @@ public interface IFuncionarioRepository extends JpaRepository<Funcionario, UUID>
     List<Funcionario> GetFuncionariosByCargo(String cargo);
     List<Funcionario> GetFuncionariosBySetorId(UUID id);
     List<Funcionario> GetFuncionariosByStatus(Boolean status);
-
+    void UpdateFuncionario(UUID id, Funcionario funcionario);
 }
