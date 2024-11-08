@@ -21,6 +21,12 @@ public class RemuneracaoService {
         return repository.findByFuncionarioId(id);
     }
 
+
+    public Remuneracao buscarPorId (UUID id){
+        return repository.findById(id)
+                .orElseThrow(() -> new ElementNotFoundException("Remuneracao"));
+    }
+
     public List<Remuneracao> listarTodos(){
         return repository.findAll();
     }
@@ -37,12 +43,14 @@ public class RemuneracaoService {
         }
     }
 
-    public void alterarRemuneracaoPeloId(UUID id,Remuneracao remuneracao){
-        if(repository.existsById(id)){
-            repository.UpdateRemuneracao(id, remuneracao);
-        } else {
-            throw new ElementNotFoundException("Funcionário");
-        }    }
+    public void alterarRemuneracaoPeloId(UUID id,Remuneracao remuneracaoUpdated){
+        var remuneracao = buscarPorId(id);
+        remuneracao.setTipo(remuneracaoUpdated.getTipo());
+        remuneracao.setData(remuneracaoUpdated.getData());
+        remuneracao.setDescricao(remuneracaoUpdated.getDescricao());
+        remuneracao.setFuncionario(remuneracaoUpdated.getFuncionario());
+        repository.save(remuneracao);
+    }
 
     public void excluirRemuneracao(UUID id){
         if(repository.existsById(id)){
