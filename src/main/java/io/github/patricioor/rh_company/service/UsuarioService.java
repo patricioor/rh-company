@@ -1,7 +1,7 @@
 package io.github.patricioor.rh_company.service;
 
-import io.github.patricioor.rh_company.domain.Setor;
 import io.github.patricioor.rh_company.domain.Usuario;
+import io.github.patricioor.rh_company.domain.dto.UsuarioDTO;
 import io.github.patricioor.rh_company.exception.ElementAlreadyExistsException;
 import io.github.patricioor.rh_company.exception.ElementNotFoundException;
 import io.github.patricioor.rh_company.repository.IUsuarioRepository;
@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -17,50 +16,89 @@ public class UsuarioService {
     @Autowired
     private IUsuarioRepository repository;
 
-    List<Usuario> listarTodosOsUsuarios(){
+    public List<Usuario> listarTodosOsUsuarios() {
         return repository.findAll();
     }
 
-    public Usuario buscarPorId (UUID id){
+    public Usuario buscarPorId(UUID id) {
         return repository.findById(id)
                 .orElseThrow(() -> new ElementNotFoundException("Usuário"));
     }
 
-    Boolean UsuarioExiste(Usuario usuario){
+    Boolean UsuarioExiste(Usuario usuario) {
         return repository.existsById(usuario.getId());
     }
 
-    void criarUsuario(Usuario usuario){
-        if(repository.existsById(usuario.getId())) {
-            repository.save(usuario);
-        } else {
+    public Usuario criarUsuario(UsuarioDTO usuariodto) {
+        if (repository.findUsurioByUsername(usuariodto.getUsername()) != null) {
             throw new ElementAlreadyExistsException("Usuário");
+        }
+
+        Usuario usuario = new Usuario();
+        usuario.setUsuario(usuariodto.getUsername());
+        usuario.setSenha(usuariodto.getSenha());
+        usuario.setPerfil(usuariodto.getPerfil());
+
+        repository.save(usuario);
+        return usuario;
+    }
+
+    public Usuario GetUsuarioByUsername(String usuario){
+        try{
+            var usuarioFound = repository.findUsurioByUsername(usuario);
+            return usuarioFound;
+        } catch (ElementNotFoundException e) {
+            throw new ElementNotFoundException("Usuário");
         }
     }
 
-    void alterarPerfil(UUID id, String perfil){
-        var usuario = buscarPorId(id);
-        usuario.setPerfil(perfil);
+    public Usuario atualizarUsername(UsuarioDTO usuariodto) {
+        var usuario = GetUsuarioByUsername(usuariodto.getUsername());
+
+        if (usuario == null) {
+            throw new ElementNotFoundException("Usuário");
+        }
+
+        usuario.setUsuario(usuariodto.getUsername());
+
         repository.save(usuario);
+        return usuario;
     }
 
-    void alterarUsuario(UUID id, String username){
-        var usuario = buscarPorId(id);
-        usuario.setPerfil(username);
+    public Usuario atualizarSenha(UsuarioDTO usuariodto) {
+        var usuario = repository.findUsurioByUsername(usuariodto.getUsername());
+
+        if (usuario == null) {
+            throw new ElementNotFoundException("Usuário");
+        }
+
+        usuario.setSenha(usuariodto.getSenha());
+
         repository.save(usuario);
+        return usuario;
     }
 
-    void alterarSenha(UUID id, String senha){
-        var usuario = buscarPorId(id);
-        usuario.setPerfil(senha);
+    public Usuario atualizarPerfil(UsuarioDTO usuariodto) {
+        var usuario = repository.findUsurioByUsername(usuariodto.getUsername());
+
+        if (usuario == null) {
+            throw new ElementNotFoundException("Usuário");
+        }
+
+        usuario.setPerfil(usuariodto.getPerfil());
+
         repository.save(usuario);
+        return usuario;
     }
 
-    void apagarUsuario(UUID id){
-        if(repository.existsById(id)){
-            repository.deleteById(id);
-        } else {
-            throw new RuntimeException("Usuário não encontrado");
+    public Usuario apagarUsuario(UsuarioDTO usuarioDTO) {
+        try{
+            var usuario = repository.findUsurioByUsername(usuarioDTO.getUsername());
+            repository.deleteById(usuario.getId());
+            return usuario;
+        } catch (ElementNotFoundException e){
+            throw new ElementNotFoundException("Usuário");
         }
     }
 }
+
