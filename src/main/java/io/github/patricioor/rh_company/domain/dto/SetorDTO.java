@@ -6,5 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SetorDTO {
+    private String id;
     private String nome;
 }
