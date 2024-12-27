@@ -1,15 +1,13 @@
 package io.github.patricioor.rh_company.service;
 
-import io.github.patricioor.rh_company.domain.Funcionario;
 import io.github.patricioor.rh_company.domain.Remuneracao;
-import io.github.patricioor.rh_company.exception.ElementAlreadyExistsException;
-import io.github.patricioor.rh_company.exception.ElementNotFoundException;
+import io.github.patricioor.rh_company.domain.exception.ElementAlreadyExistsException;
+import io.github.patricioor.rh_company.domain.exception.ElementNotFoundException;
 import io.github.patricioor.rh_company.repository.IRemuneracaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service

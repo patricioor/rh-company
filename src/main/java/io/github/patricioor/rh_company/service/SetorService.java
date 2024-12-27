@@ -1,8 +1,9 @@
 package io.github.patricioor.rh_company.service;
 
 import io.github.patricioor.rh_company.domain.Setor;
-import io.github.patricioor.rh_company.domain.dto.SetorDTO;
-import io.github.patricioor.rh_company.exception.ElementNotFoundException;
+import io.github.patricioor.rh_company.application.dto.SetorDTO;
+import io.github.patricioor.rh_company.domain.exception.ElementNotFoundException;
+import io.github.patricioor.rh_company.repository.ISetorFuncionariosRepository;
 import io.github.patricioor.rh_company.repository.ISetorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,10 +16,12 @@ import java.util.stream.Collectors;
 public class SetorService {
 
     private final ISetorRepository repository;
+    private final ISetorFuncionariosRepository setorFuncionariosRepository;
 
     @Autowired
-    public SetorService(ISetorRepository repository) {
+    public SetorService(ISetorRepository repository, ISetorFuncionariosRepository setorFuncionariosRepository) {
         this.repository = repository;
+        this.setorFuncionariosRepository = setorFuncionariosRepository;
     }
 
     public List<String> listaSetoresNome(){
@@ -66,5 +69,9 @@ public class SetorService {
         } catch (ElementNotFoundException e){
             throw new ElementNotFoundException("Setor");
         }
+    }
+
+    public void InserirFuncionarioNoSetor( UUID setorId,UUID funcionarioId) {
+        setorFuncionariosRepository.inserirFuncionarioNoSetor(setorId, funcionarioId);
     }
 }

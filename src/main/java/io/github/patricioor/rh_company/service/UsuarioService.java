@@ -1,9 +1,9 @@
 package io.github.patricioor.rh_company.service;
 
 import io.github.patricioor.rh_company.domain.Usuario;
-import io.github.patricioor.rh_company.domain.dto.UsuarioDTO;
-import io.github.patricioor.rh_company.exception.ElementAlreadyExistsException;
-import io.github.patricioor.rh_company.exception.ElementNotFoundException;
+import io.github.patricioor.rh_company.application.dto.UsuarioDTO;
+import io.github.patricioor.rh_company.domain.exception.ElementAlreadyExistsException;
+import io.github.patricioor.rh_company.domain.exception.ElementNotFoundException;
 import io.github.patricioor.rh_company.repository.IUsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

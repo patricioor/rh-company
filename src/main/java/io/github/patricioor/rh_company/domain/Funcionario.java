@@ -33,9 +33,6 @@ public class Funcionario {
     @NotBlank
     @Column(name = "genero")
     private String genero;
-    @NotBlank
-    @Column(name = "email")
-    private String email;
     @NotNull
     @Column(name = "data_contratacao")
     private LocalDate dataContratacao;
@@ -48,10 +45,6 @@ public class Funcionario {
     @NotNull
     @Column(name = "status")
     private Boolean status;
-
-    @OneToOne
-    @JoinColumn(name = "banco")
-    private Banco banco;
 
     @ManyToOne
     @JoinColumn(name = "setor_id", referencedColumnName = "id")

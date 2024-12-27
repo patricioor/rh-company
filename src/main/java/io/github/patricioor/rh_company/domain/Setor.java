@@ -25,6 +25,6 @@ public class Setor {
     @Column(name = "nome")
     private String nome;
     @OneToMany
-    @Column(name = "funcionarios")
-    List<Funcionario> funcionarios;
+    @Column(name = "funcionario")
+    List<Funcionario> funcionario;
 }

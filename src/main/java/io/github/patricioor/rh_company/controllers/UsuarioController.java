@@ -1,7 +1,7 @@
 package io.github.patricioor.rh_company.controllers;
 
 import io.github.patricioor.rh_company.domain.Usuario;
-import io.github.patricioor.rh_company.domain.dto.UsuarioDTO;
+import io.github.patricioor.rh_company.application.dto.UsuarioDTO;
 import io.github.patricioor.rh_company.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

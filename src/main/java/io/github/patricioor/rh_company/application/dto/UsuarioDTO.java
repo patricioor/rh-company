@@ -1,4 +1,4 @@
-package io.github.patricioor.rh_company.domain.dto;
+package io.github.patricioor.rh_company.application.dto;
 
 import lombok.Getter;
 import lombok.Setter;

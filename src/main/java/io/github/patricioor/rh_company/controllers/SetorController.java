@@ -1,7 +1,7 @@
 package io.github.patricioor.rh_company.controllers;
 
 import io.github.patricioor.rh_company.domain.Setor;
-import io.github.patricioor.rh_company.domain.dto.SetorDTO;
+import io.github.patricioor.rh_company.application.dto.SetorDTO;
 import io.github.patricioor.rh_company.service.SetorService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
