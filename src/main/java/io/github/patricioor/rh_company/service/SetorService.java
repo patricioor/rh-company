@@ -36,7 +36,7 @@ public class SetorService {
                 .orElseThrow(() -> new ElementNotFoundException("Setor"));
     }
 
-    Setor retornarSetorPeloNome(String nome){
+    Setor buscarSetorPeloNome(String nome){
         try {
             return repository.findSetorByName(nome);
         } catch (ElementNotFoundException e){
@@ -45,7 +45,7 @@ public class SetorService {
     }
 
     public Setor criarSetor(String nome){
-        if(retornarSetorPeloNome(nome) == null) {
+        if(buscarSetorPeloNome(nome) == null) {
             var setor = new Setor();
             setor.setNome(nome);
             repository.save(setor);
@@ -54,9 +54,9 @@ public class SetorService {
         return null;
     }
 
-    public Setor AtualizarSetor(String id, SetorDTO setorDTO){
-        var setor = buscarPorId(UUID.fromString(id));
-        setor.setNome(setorDTO.getNome());
+    public Setor AtualizarSetor(SetorDTO setorDTO){
+        var setor = buscarSetorPeloNome(setorDTO.getNome());
+        setor.setNome(setor.getNome());
         repository.save(setor);
         return setor;
     }
@@ -73,5 +73,9 @@ public class SetorService {
 
     public void InserirFuncionarioNoSetor( UUID setorId,UUID funcionarioId) {
         setorFuncionariosRepository.inserirFuncionarioNoSetor(setorId, funcionarioId);
+    }
+
+    public void DeletarFuncionarioDoSetor(UUID funcionarioId) {
+        setorFuncionariosRepository.deleteSetorFuncionariosById(funcionarioId);
     }
 }

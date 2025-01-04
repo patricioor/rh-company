@@ -1,8 +1,7 @@
 package io.github.patricioor.rh_company.controllers;
 
-import io.github.patricioor.rh_company.application.dto.Funcionario.FuncionarioAtualizarDTO;
 import io.github.patricioor.rh_company.application.dto.Funcionario.FuncionarioDTO;
-import io.github.patricioor.rh_company.domain.Funcionario;
+import io.github.patricioor.rh_company.application.dto.Funcionario.FuncionarioIdDTO;
 import io.github.patricioor.rh_company.service.FuncionarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +21,12 @@ public class FuncionarioController {
     }
 
     @GetMapping("/id/{id}")
-    public Funcionario GetById(@RequestParam("id") String id){
+    public FuncionarioDTO GetById(@RequestParam("id") String id){
         return service.buscarPorId(id);
     }
 
     @GetMapping("/nome/{nome}")
-    public Funcionario GetByName(@RequestParam("nome") @Valid String nome){
+    public FuncionarioIdDTO GetByName(@RequestParam("nome") @Valid String nome){
         return service.buscarPorNome(nome);
     }
 
@@ -37,22 +36,22 @@ public class FuncionarioController {
     }
 
     @PostMapping("/registrar")
-    public Funcionario criarFuncionario(@RequestParam("cpf") @Valid String cpf, @RequestBody @Valid FuncionarioAtualizarDTO funcionarioAtualizarDTO){
-        return service.criarFuncionario(funcionarioAtualizarDTO, cpf);
+    public FuncionarioDTO criarFuncionario(@RequestParam("cpf") @Valid String cpf, @RequestBody @Valid FuncionarioDTO funcionarioDTO){
+        return service.criarFuncionario(funcionarioDTO, cpf);
     }
 
     @PutMapping("/atualizar")
-    public Funcionario atualizarFuncionario(@RequestParam("cpf") @Valid String cpf, @RequestBody @Valid FuncionarioAtualizarDTO funcionarioAtualizarDTO){
-        return service.atualizarFuncionario(cpf, funcionarioAtualizarDTO);
+    public FuncionarioIdDTO atualizarFuncionario(@RequestParam("cpf") @Valid String cpf, @RequestBody @Valid FuncionarioDTO funcionarioDTO){
+        return service.atualizarFuncionario(cpf, funcionarioDTO);
     }
 
     @PutMapping("/alterar-setor-funcionario")
-    public Funcionario alterarSetorFuncionario(@RequestParam("cpf") @Valid String cpf, @RequestParam("nomeSetor") @Valid String nomeSetor){
+    public FuncionarioDTO alterarSetorFuncionario(@RequestParam("cpf") @Valid String cpf, @RequestParam("nomeSetor") @Valid String nomeSetor){
         return service.alterarSetorFuncionar(cpf, nomeSetor);
     }
 
     @DeleteMapping("/deletar-cpf")
-    public Funcionario deletarFuncionario(@RequestBody @Valid  FuncionarioDTO funcionarioDTO){
-        return service.excluirFuncionario(funcionarioDTO.getCpf());
+    public FuncionarioDTO deletarFuncionario(@RequestParam("cpf") @Valid String cpf){
+        return service.excluirFuncionario(cpf);
     }
 }

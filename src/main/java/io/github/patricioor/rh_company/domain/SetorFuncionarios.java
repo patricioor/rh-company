@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.UUID;
 
@@ -21,5 +23,6 @@ public class SetorFuncionarios {
     private UUID setorId;
 
     @Column(name = "funcionario_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private UUID funcionarioId;
 }

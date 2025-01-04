@@ -31,11 +31,11 @@ public class SetorController {
 
     @PutMapping("/atualizar")
     public void atualizarSetor(@RequestBody @Valid SetorDTO setorDTO){
-        service.AtualizarSetor(setorDTO.getId(), setorDTO);
+        service.AtualizarSetor(setorDTO);
     }
 
     @DeleteMapping("deletar-id")
-    public void deletarSetor(@RequestBody @Valid SetorDTO setorDTO){
-        service.ApagarSetorPeloId(setorDTO.getId());
+    public void deletarSetor(@RequestParam("setorId") @Valid String id ){
+        service.ApagarSetorPeloId(id);
     }
 }

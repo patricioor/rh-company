@@ -26,6 +26,14 @@ public interface IFuncionarioRepository extends JpaRepository<Funcionario, UUID>
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE Funcionario (id, nome, cargo,setor_id, data_contratacao, salario_base, status, cpf, data_nascimento,genero) VALUES (:setorId, :funcionarioId)", nativeQuery = true)
-    Funcionario updateFuncionarioByCpf()
+    @Query("UPDATE Funcionario f " +
+                    "SET f.nome = :#{#funcionario.nome}," +
+                    " f.cargo = :#{#funcionario.cargo}," +
+                    " f.genero = :#{#funcionario.genero}, " +
+                    " f.dataContratacao = :#{#funcionario.dataContratacao}, " +
+                    " f.dataNascimento = :#{#funcionario.dataNascimento}, " +
+                    " f.salarioBase = :#{#funcionario.salarioBase}," +
+                    " f.status = :#{#funcionario.status}" +
+                    " WHERE f.cpf = :#{#funcionario.cpf}")
+    void updateFuncionarioByCpf(@Param("funcionario") Funcionario funcionario);
 }

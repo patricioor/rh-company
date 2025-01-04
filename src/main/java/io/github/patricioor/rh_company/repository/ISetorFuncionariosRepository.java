@@ -16,4 +16,9 @@ public interface ISetorFuncionariosRepository extends JpaRepository<SetorFuncion
     @Transactional
     @Query(value = "INSERT INTO setor_funcionarios (setor_id, funcionario_id) VALUES (:setorId, :funcionarioId)", nativeQuery = true)
     void inserirFuncionarioNoSetor(@Param("setorId") UUID setorId, @Param("funcionarioId") UUID funcionarioId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE FROM setor_funcionarios WHERE setor_funcionarios.funcionario_id = (:funcionarioId)", nativeQuery = true)
+    void deleteSetorFuncionariosById(@Param("funcionarioId") UUID funcionarioId);
 }

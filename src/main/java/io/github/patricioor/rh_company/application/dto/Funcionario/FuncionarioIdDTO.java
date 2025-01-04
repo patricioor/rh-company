@@ -7,11 +7,12 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class FuncionarioAtualizarDTO {
+public class FuncionarioIdDTO {
+    private String id;
     private String nome;
+    private String cpf;
     private String cargo;
     private String genero;
-    private String email;
     private LocalDate dataContratacao;
     private LocalDate dataNascimento;
     private Double salarioBase;
