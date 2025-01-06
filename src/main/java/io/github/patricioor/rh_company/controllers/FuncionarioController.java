@@ -1,7 +1,7 @@
 package io.github.patricioor.rh_company.controllers;
 
+import io.github.patricioor.rh_company.application.dto.Funcionario.FuncionarioManipularDTO;
 import io.github.patricioor.rh_company.application.dto.Funcionario.FuncionarioDTO;
-import io.github.patricioor.rh_company.application.dto.Funcionario.FuncionarioIdDTO;
 import io.github.patricioor.rh_company.service.FuncionarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,23 +26,23 @@ public class FuncionarioController {
     }
 
     @GetMapping("/nome/{nome}")
-    public FuncionarioIdDTO GetByName(@RequestParam("nome") @Valid String nome){
+    public FuncionarioDTO GetByName(@RequestParam("nome") @Valid String nome){
         return service.buscarPorNome(nome);
     }
 
     @GetMapping("/lista")
-    public List<String> AllFuncionarios(){
-        return   service.listarTodos();
+    public List<FuncionarioDTO> AllFuncionarios(){
+        return service.listarTodos();
     }
 
     @PostMapping("/registrar")
-    public FuncionarioDTO criarFuncionario(@RequestParam("cpf") @Valid String cpf, @RequestBody @Valid FuncionarioDTO funcionarioDTO){
-        return service.criarFuncionario(funcionarioDTO, cpf);
+    public FuncionarioDTO criarFuncionario(@RequestParam("cpf") @Valid String cpf, @RequestBody @Valid FuncionarioManipularDTO funcionarioManipularDTO){
+        return service.criarFuncionario(cpf, funcionarioManipularDTO);
     }
 
     @PutMapping("/atualizar")
-    public FuncionarioIdDTO atualizarFuncionario(@RequestParam("cpf") @Valid String cpf, @RequestBody @Valid FuncionarioDTO funcionarioDTO){
-        return service.atualizarFuncionario(cpf, funcionarioDTO);
+    public FuncionarioDTO atualizarFuncionario(@RequestParam("cpf") @Valid String cpf, @RequestBody @Valid FuncionarioManipularDTO funcionarioManipularDTO){
+        return service.atualizarFuncionario(cpf, funcionarioManipularDTO);
     }
 
     @PutMapping("/alterar-setor-funcionario")

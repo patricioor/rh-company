@@ -1,7 +1,6 @@
 package io.github.patricioor.rh_company.controllers;
 
-import io.github.patricioor.rh_company.domain.Setor;
-import io.github.patricioor.rh_company.application.dto.SetorDTO;
+import io.github.patricioor.rh_company.application.dto.Setor.SetorDTO;
 import io.github.patricioor.rh_company.service.SetorService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,14 +23,19 @@ public class SetorController {
         return service.listaSetoresNome();
     }
 
+    @GetMapping("/nome/{nome}")
+    public SetorDTO BuscarSetor(@RequestParam("nome") @Valid String nome){
+        return service.buscarSetorPeloNome(nome);
+    }
+
     @PostMapping("/registrar")
-    public Setor criarSetor(@RequestBody @Valid SetorDTO setorDTO){
-        return service.criarSetor(setorDTO.getNome());
+    public SetorDTO criarSetor(@RequestBody @Valid String nome){
+        return service.criarSetor(nome);
     }
 
     @PutMapping("/atualizar")
-    public void atualizarSetor(@RequestBody @Valid SetorDTO setorDTO){
-        service.AtualizarSetor(setorDTO);
+    public void atualizarSetor(@RequestParam("nomeSetorAntigo") @Valid String nomeSetorAntigo, @RequestParam("nomeSetorNovo") @Valid String nomeSetorNovo){
+        service.AtualizarSetor(nomeSetorAntigo, nomeSetorNovo);
     }
 
     @DeleteMapping("deletar-id")

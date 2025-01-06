@@ -1,14 +1,11 @@
 package io.github.patricioor.rh_company.application.dto.Funcionario;
 
-import io.github.patricioor.rh_company.application.dto.Setor.SetorDTO;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDate;
 
 @Getter
-@Setter
-public class FuncionarioDTO {
+public class FuncionarioSetorDTO {
     private String id;
     private String nome;
     private String cpf;
@@ -18,5 +15,4 @@ public class FuncionarioDTO {
     private LocalDate dataNascimento;
     private Double salarioBase;
     private Boolean status;
-    private SetorDTO setor;
 }

@@ -1,8 +1,10 @@
 package io.github.patricioor.rh_company.application.mappers;
 
-import io.github.patricioor.rh_company.application.dto.SetorDTO;
+import io.github.patricioor.rh_company.application.dto.Setor.SetorDTO;
 import io.github.patricioor.rh_company.domain.Setor;
+import org.springframework.stereotype.Service;
 
+@Service
 public class SetorMapper {
     public Setor toSetor(SetorDTO setorDTO){
         var setor = new Setor();
@@ -14,6 +16,7 @@ public class SetorMapper {
     public SetorDTO toSetorDto(Setor setor){
         var setorDto = new SetorDTO();
         setorDto.setNome(setor.getNome());
+        setorDto.setFuncionarios(setor.getFuncionarios());
 
         return setorDto;
     }

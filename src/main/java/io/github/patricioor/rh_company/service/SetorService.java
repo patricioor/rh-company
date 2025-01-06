@@ -1,13 +1,17 @@
 package io.github.patricioor.rh_company.service;
 
+import io.github.patricioor.rh_company.application.dto.Funcionario.FuncionarioSetorDTO;
+import io.github.patricioor.rh_company.application.mappers.SetorMapper;
+import io.github.patricioor.rh_company.domain.Funcionario;
 import io.github.patricioor.rh_company.domain.Setor;
-import io.github.patricioor.rh_company.application.dto.SetorDTO;
+import io.github.patricioor.rh_company.application.dto.Setor.SetorDTO;
 import io.github.patricioor.rh_company.domain.exception.ElementNotFoundException;
 import io.github.patricioor.rh_company.repository.ISetorFuncionariosRepository;
 import io.github.patricioor.rh_company.repository.ISetorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -17,11 +21,16 @@ public class SetorService {
 
     private final ISetorRepository repository;
     private final ISetorFuncionariosRepository setorFuncionariosRepository;
+    private final SetorMapper setorMapper;
+
+    private final FuncionarioService funcionarioService;
 
     @Autowired
-    public SetorService(ISetorRepository repository, ISetorFuncionariosRepository setorFuncionariosRepository) {
+    public SetorService(ISetorRepository repository, ISetorFuncionariosRepository setorFuncionariosRepository, SetorMapper setorMapper, FuncionarioService funcionarioService) {
         this.repository = repository;
         this.setorFuncionariosRepository = setorFuncionariosRepository;
+        this.setorMapper = setorMapper;
+        this.funcionarioService = funcionarioService;
     }
 
     public List<String> listaSetoresNome(){
@@ -36,29 +45,40 @@ public class SetorService {
                 .orElseThrow(() -> new ElementNotFoundException("Setor"));
     }
 
-    Setor buscarSetorPeloNome(String nome){
+    public SetorDTO buscarSetorPeloNome(String nome){
         try {
-            return repository.findSetorByName(nome);
+            Setor setor = repository.findSetorByName(nome);
+            return setorMapper.toSetorDto(setor);
         } catch (ElementNotFoundException e){
             throw new ElementNotFoundException("Setor");
         }
     }
 
-    public Setor criarSetor(String nome){
+    public SetorDTO criarSetor(String nome){
         if(buscarSetorPeloNome(nome) == null) {
             var setor = new Setor();
             setor.setNome(nome);
             repository.save(setor);
-            return setor;
+            return setorMapper.toSetorDto(setor);
         }
         return null;
     }
 
-    public Setor AtualizarSetor(SetorDTO setorDTO){
-        var setor = buscarSetorPeloNome(setorDTO.getNome());
-        setor.setNome(setor.getNome());
-        repository.save(setor);
-        return setor;
+    public SetorDTO AtualizarSetor(String nomeSetorAntigo, String nomeSetorNovo){
+        var setorDto = buscarSetorPeloNome(nomeSetorAntigo);
+        repository.updateSetorByName(setorDto.getNome(), nomeSetorNovo);
+
+        List<FuncionarioSetorDTO> listaFuncionario = new ArrayList<>();
+        List<UUID> listaIdFuncionarios = setorFuncionariosRepository.listarFuncionariosPorSetor(UUID.fromString(setorDto.getId()));
+
+        for(UUID uuid: listaIdFuncionarios){
+            var funcionario = funcionarioService.buscarPorId(uuid.toString());
+            listaFuncionario.add(funcionario);
+        }
+
+        setorDto.setFuncionarios();
+
+        return setorDto;
     }
 
     public Setor ApagarSetorPeloId(String id){
