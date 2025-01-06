@@ -21,7 +21,7 @@ public class FuncionarioController {
     }
 
     @GetMapping("/id/{id}")
-    public FuncionarioDTO GetById(@RequestParam("id") String id){
+    public FuncionarioDTO GetById(@RequestParam("id") @Valid String id){
         return service.buscarPorId(id);
     }
 

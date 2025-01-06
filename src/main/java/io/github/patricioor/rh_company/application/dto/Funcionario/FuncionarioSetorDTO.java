@@ -1,10 +1,12 @@
 package io.github.patricioor.rh_company.application.dto.Funcionario;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
 @Getter
+@Setter
 public class FuncionarioSetorDTO {
     private String id;
     private String nome;

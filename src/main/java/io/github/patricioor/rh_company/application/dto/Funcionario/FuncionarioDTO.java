@@ -1,6 +1,6 @@
 package io.github.patricioor.rh_company.application.dto.Funcionario;
 
-import io.github.patricioor.rh_company.application.dto.Setor.SetorDTO;
+import io.github.patricioor.rh_company.application.dto.Setor.SetorManipularDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,5 +18,5 @@ public class FuncionarioDTO {
     private LocalDate dataNascimento;
     private Double salarioBase;
     private Boolean status;
-    private SetorDTO setor;
+    private SetorManipularDTO setor;
 }

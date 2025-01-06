@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/setor")
@@ -23,8 +24,11 @@ public class SetorController {
         return service.listaSetoresNome();
     }
 
-    @GetMapping("/nome/{nome}")
-    public SetorDTO BuscarSetor(@RequestParam("nome") @Valid String nome){
+    @GetMapping("/id/{id}")
+    public SetorDTO BuscarSetorId(@RequestParam("id") @Valid String id){
+        return service.buscarPorId(UUID.fromString(id));
+    }    @GetMapping("/nome/{nome}")
+    public SetorDTO BuscarSetorNome(@RequestParam("nome") @Valid String nome){
         return service.buscarSetorPeloNome(nome);
     }
 
@@ -35,11 +39,11 @@ public class SetorController {
 
     @PutMapping("/atualizar")
     public void atualizarSetor(@RequestParam("nomeSetorAntigo") @Valid String nomeSetorAntigo, @RequestParam("nomeSetorNovo") @Valid String nomeSetorNovo){
-        service.AtualizarSetor(nomeSetorAntigo, nomeSetorNovo);
+        service.atualizarSetor(nomeSetorAntigo, nomeSetorNovo);
     }
 
     @DeleteMapping("deletar-id")
     public void deletarSetor(@RequestParam("setorId") @Valid String id ){
-        service.ApagarSetorPeloId(id);
+        service.apagarSetorPeloId(id);
     }
 }

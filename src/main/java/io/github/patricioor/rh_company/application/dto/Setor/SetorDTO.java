@@ -1,6 +1,6 @@
 package io.github.patricioor.rh_company.application.dto.Setor;
 
-import io.github.patricioor.rh_company.domain.Funcionario;
+import io.github.patricioor.rh_company.application.dto.Funcionario.FuncionarioSetorDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,5 +11,5 @@ import java.util.List;
 public class SetorDTO {
     private String id;
     private String nome;
-    private List<Funcionario> funcionarios;
+    private List<FuncionarioSetorDTO> funcionarios;
 }

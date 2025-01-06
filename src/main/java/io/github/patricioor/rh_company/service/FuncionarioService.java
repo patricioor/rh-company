@@ -3,6 +3,7 @@ package io.github.patricioor.rh_company.service;
 import io.github.patricioor.rh_company.application.dto.Funcionario.FuncionarioDTO;
 import io.github.patricioor.rh_company.application.dto.Funcionario.FuncionarioIdDTO;
 import io.github.patricioor.rh_company.application.dto.Funcionario.FuncionarioManipularDTO;
+import io.github.patricioor.rh_company.application.dto.Funcionario.FuncionarioSetorDTO;
 import io.github.patricioor.rh_company.application.mappers.FuncionarioMapper;
 import io.github.patricioor.rh_company.application.mappers.SetorMapper;
 import io.github.patricioor.rh_company.domain.Funcionario;
@@ -75,12 +76,12 @@ public class FuncionarioService{
         }
     }
 
-    public List<FuncionarioDTO> retornarFuncionariosPeloSetorId(UUID id){
+    public List<FuncionarioSetorDTO> retornarFuncionariosPeloSetorId(UUID id){
         try {
             List<Funcionario> lista = repository.findFuncionariosBySetor(id);
-            List<FuncionarioDTO> listaDto = new ArrayList<>();
+            List<FuncionarioSetorDTO> listaDto = new ArrayList<>();
             for(Funcionario funcionario: lista)
-                listaDto.add(funcionarioMapper.toFuncionarioDTO(funcionario));
+                listaDto.add(funcionarioMapper.toFuncionarioSetorDtoByFuncDTO(funcionarioMapper.toFuncionarioDTO(funcionario)));
             return listaDto;
         } catch (ElementNotFoundException e){
             throw new ElementNotFoundException("Funcionário");
@@ -129,7 +130,7 @@ public class FuncionarioService{
             var setor = setorService.buscarSetorPeloNome(nomeSetor);
 
             if(setor != null){
-                setorService.InserirFuncionarioNoSetor(UUID.fromString(setor.getId()), funcionario.getId());
+                setorService.inserirFuncionarioNoSetor(UUID.fromString(setor.getId()), funcionario.getId());
             }
 
             funcionario.setSetor(setorMapper.toSetor(setor));
@@ -143,7 +144,7 @@ public class FuncionarioService{
 
     public FuncionarioDTO excluirFuncionario(String cpf){
         var funcionario = repository.findFuncionarioByCpf(cpf);
-        setorService.DeletarFuncionarioDoSetor(funcionario.getId());
+        setorService.deletarFuncionarioDoSetor(funcionario.getId());
         repository.delete(funcionario);
         return funcionarioMapper.toFuncionarioDTO(funcionario);
     }

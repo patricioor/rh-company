@@ -15,8 +15,8 @@ public class SetorMapper {
 
     public SetorDTO toSetorDto(Setor setor){
         var setorDto = new SetorDTO();
+        setorDto.setId(setor.getId().toString());
         setorDto.setNome(setor.getNome());
-        setorDto.setFuncionarios(setor.getFuncionarios());
 
         return setorDto;
     }
