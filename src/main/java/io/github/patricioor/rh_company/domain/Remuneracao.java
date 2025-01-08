@@ -7,11 +7,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.UUID;
 
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -20,16 +21,31 @@ public class Remuneracao {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @ManyToOne
+    @Column(name = "salario_base")
+    private BigDecimal salarioBase;
+    @Column(name = "data_inicio")
+    private LocalDate dataInicio;
+    @Column(name = "data_fim")
+    private LocalDate dataFim;
+    @NotBlank
+    @Column(name = "tipo_contrato")
+    private String tipoContrato;
+    @Column(name = "carga_horaria_semanal")
+    private Integer cargaHorariaSemanal;
+    @Column(name = "adicional_periculosidade")
+    private BigDecimal adicionalPericulosidade;
+    @Column(name = "adicional_insalubridade")
+    private BigDecimal adicionalInsalubridade;
+    @Column(name = "bonus")
+    private BigDecimal bonus;
+
     @JoinColumn(name = "funcionarios_id", referencedColumnName = "id")
-    private Funcionario funcionario;
-    @NotBlank
-    @Column(name = "tipo")
-    private String tipo;
-    @NotBlank
-    @Column(name = "data")
-    private Date data;
-    @NotBlank
-    @Column(name = "descricao")
-    private String Descricao;
+    private UUID funcionarioId;
+
+    public BigDecimal calcularTotalRemuneracao(){
+        return salarioBase
+                .add(adicionalPericulosidade != null ? adicionalPericulosidade: BigDecimal.ZERO)
+                .add(adicionalInsalubridade != null ? adicionalInsalubridade: BigDecimal.ZERO)
+                .add(bonus != null ? bonus : BigDecimal.ZERO);
+    }
 }
