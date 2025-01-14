@@ -14,21 +14,15 @@ import org.springframework.stereotype.Service;
 public class FuncionarioMapper {
 
     public Funcionario toFuncionario(FuncionarioManipularDTO dto, String cpf){
-        try{
-            Funcionario funcionario = new Funcionario();
-            funcionario.setNome(dto.getNome());
-            funcionario.setCpf(cpf);
-            funcionario.setCargo(dto.getCargo());
-            funcionario.setGenero(dto.getGenero());
-            funcionario.setDataContratacao(dto.getDataContratacao());
-            funcionario.setDataNascimento(dto.getDataNascimento());
-            funcionario.setSalarioBase(dto.getSalarioBase());
-            funcionario.setStatus(dto.getStatus());
-
-            return funcionario;
-        } catch ( ElementNotFoundException e){
-            throw new ElementNotFoundException("Funcionário");
-        }
+        Funcionario funcionario = new Funcionario();
+        funcionario.setNome(dto.getNome());
+        funcionario.setCpf(cpf);
+        funcionario.setCargo(dto.getCargo());
+        funcionario.setGenero(dto.getGenero());
+        funcionario.setDataContratacao(dto.getDataContratacao());
+        funcionario.setDataNascimento(dto.getDataNascimento());
+        funcionario.setStatus(dto.getStatus());
+        return funcionario;
     }
     public FuncionarioDTO toFuncionarioDTO (Funcionario funcionario){
         try {
@@ -40,7 +34,6 @@ public class FuncionarioMapper {
             dto.setGenero(funcionario.getGenero());
             dto.setDataContratacao(funcionario.getDataContratacao());
             dto.setDataNascimento(funcionario.getDataNascimento());
-            dto.setSalarioBase(funcionario.getSalarioBase());
             dto.setStatus(funcionario.getStatus());
             if (funcionario.getSetor() != null) {
                 SetorManipularDTO setorManipularDTO = new SetorManipularDTO();
@@ -63,7 +56,6 @@ public class FuncionarioMapper {
             dto.setGenero(funcionario.getGenero());
             dto.setDataContratacao(funcionario.getDataContratacao());
             dto.setDataNascimento(funcionario.getDataNascimento());
-            dto.setSalarioBase(funcionario.getSalarioBase());
             dto.setStatus(funcionario.getStatus());
             if (funcionario.getSetor() != null) {
                 SetorDTO setorDTO = new SetorDTO();
@@ -88,7 +80,6 @@ public class FuncionarioMapper {
             dto.setGenero(funcionarioIdDTO.getGenero());
             dto.setDataContratacao(funcionarioIdDTO.getDataContratacao());
             dto.setDataNascimento(funcionarioIdDTO.getDataNascimento());
-            dto.setSalarioBase(funcionarioIdDTO.getSalarioBase());
             dto.setStatus(funcionarioIdDTO.getStatus());
             if (funcionarioIdDTO.getSetor() != null) {
                 SetorManipularDTO setorManipularDTO = new SetorManipularDTO();
@@ -112,7 +103,6 @@ public class FuncionarioMapper {
             dto.setGenero(funcionarioDTO.getGenero());
             dto.setDataContratacao(funcionarioDTO.getDataContratacao());
             dto.setDataNascimento(funcionarioDTO.getDataNascimento());
-            dto.setSalarioBase(funcionarioDTO.getSalarioBase());
             dto.setStatus(funcionarioDTO.getStatus());
 
 

@@ -1,6 +1,6 @@
 package io.github.patricioor.rh_company.repository;
 
-import io.github.patricioor.rh_company.domain.SetorFuncionarios;
+import io.github.patricioor.rh_company.domain.tabelas_relacionamentos.SetorFuncionarios;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

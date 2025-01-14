@@ -24,10 +24,10 @@ public class SetorController {
         return service.listaSetoresNome();
     }
 
-    @GetMapping("/id/{id}")
+    @GetMapping("/id")
     public SetorDTO BuscarSetorId(@RequestParam("id") @Valid String id){
         return service.buscarPorId(UUID.fromString(id));
-    }    @GetMapping("/nome/{nome}")
+    }    @GetMapping("/nome")
     public SetorDTO BuscarSetorNome(@RequestParam("nome") @Valid String nome){
         return service.buscarSetorPeloNome(nome);
     }
@@ -42,7 +42,7 @@ public class SetorController {
         service.atualizarSetor(nomeSetorAntigo, nomeSetorNovo);
     }
 
-    @DeleteMapping("deletar-id")
+    @DeleteMapping("deletar")
     public void deletarSetor(@RequestParam("setorId") @Valid String id ){
         service.apagarSetorPeloId(id);
     }

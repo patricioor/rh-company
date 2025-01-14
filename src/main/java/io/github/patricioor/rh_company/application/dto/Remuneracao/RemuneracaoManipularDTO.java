@@ -17,5 +17,6 @@ public class RemuneracaoManipularDTO {
     private BigDecimal adicionalPericulosidade;
     private BigDecimal adicionalInsalubridade;
     private BigDecimal bonus;
+
     private String funcionarioId;
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,7 +30,24 @@ public class RemuneracaoService {
                 .orElseThrow(() -> new ElementNotFoundException("Remuneracao")));
     }
 
+    public List<RemuneracaoDTO> AllRemuneracoesByFuncionarioId (String funcionarioId){
+        var lista = repository.findListaRemuneracaoByFuncionarioId(UUID.fromString(funcionarioId));
+
+        if(lista.getFirst() == null){
+            throw new ElementNotFoundException("Remuneração");
+        }
+
+        List<RemuneracaoDTO> listaDto = new ArrayList<>();
+
+        for(Remuneracao remuneracao: lista){
+            listaDto.add(mapper.toRemuneracaoDTO(remuneracao));
+        }
+
+        return listaDto;
+    }
+
     public List<Remuneracao> retornarRemuneracaoPeloTipo (String tipoContrato, LocalDate data){
+
         return repository.findListaRemuneracaoByTipoContrato(tipoContrato, data);
     }
 
@@ -39,10 +57,16 @@ public class RemuneracaoService {
         return mapper.toRemuneracaoDTO(remuneracao);
     }
 
-    public void alterarRemuneracaoPeloId (RemuneracaoManipularDTO remuneracaoManipularDTO){
+    public RemuneracaoDTO alterarRemuneracaoPeloId (String id, RemuneracaoManipularDTO remuneracaoManipularDTO){
+        if(buscarPorId(id) == null){
+            throw new ElementNotFoundException("Remuneração");
+        }
+
         var remuneracao = buscarPorId(remuneracaoManipularDTO.getFuncionarioId());
 
         repository.updateRemuneracao(mapper.toRemuneracao(remuneracao));
+
+        return remuneracao;
     }
 
     public void excluirRemuneracao (UUID id){

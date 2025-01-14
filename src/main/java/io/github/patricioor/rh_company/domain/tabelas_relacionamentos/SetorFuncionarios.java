@@ -1,4 +1,4 @@
-package io.github.patricioor.rh_company.domain;
+package io.github.patricioor.rh_company.domain.tabelas_relacionamentos;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

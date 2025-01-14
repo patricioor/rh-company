@@ -40,9 +40,6 @@ public class Funcionario {
     @Column(name = "data_nascimento")
     private LocalDate dataNascimento;
     @NotNull
-    @Column(name = "salario_base")
-    private Double salarioBase;
-    @NotNull
     @Column(name = "status")
     private Boolean status;
 

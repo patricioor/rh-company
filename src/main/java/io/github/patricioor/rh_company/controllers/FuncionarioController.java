@@ -20,12 +20,12 @@ public class FuncionarioController {
         this.service = service;
     }
 
-    @GetMapping("/id/{id}")
+    @GetMapping("/id")
     public FuncionarioDTO GetById(@RequestParam("id") @Valid String id){
         return service.buscarPorId(id);
     }
 
-    @GetMapping("/nome/{nome}")
+    @GetMapping("/nome")
     public FuncionarioDTO GetByName(@RequestParam("nome") @Valid String nome){
         return service.buscarPorNome(nome);
     }
@@ -50,7 +50,7 @@ public class FuncionarioController {
         return service.alterarSetorFuncionar(cpf, nomeSetor);
     }
 
-    @DeleteMapping("/deletar-cpf")
+    @DeleteMapping("/excluir")
     public FuncionarioDTO deletarFuncionario(@RequestParam("cpf") @Valid String cpf){
         return service.excluirFuncionario(cpf);
     }

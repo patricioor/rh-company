@@ -32,7 +32,6 @@ public interface IFuncionarioRepository extends JpaRepository<Funcionario, UUID>
                     " f.genero = :#{#funcionario.genero}, " +
                     " f.dataContratacao = :#{#funcionario.dataContratacao}, " +
                     " f.dataNascimento = :#{#funcionario.dataNascimento}, " +
-                    " f.salarioBase = :#{#funcionario.salarioBase}," +
                     " f.status = :#{#funcionario.status}" +
                     " WHERE f.cpf = :#{#funcionario.cpf}")
     void updateFuncionarioByCpf(@Param("funcionario") Funcionario funcionario);

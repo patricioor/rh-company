@@ -7,7 +7,11 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.UUID;
+
 @RestController("/remuneracao")
+@RequestMapping("/remuneracao")
 public class RemuneracaoController {
 
     private final RemuneracaoService service;
@@ -17,7 +21,12 @@ public class RemuneracaoController {
         this.service = service;
     }
 
-    @GetMapping("/id/{id}")
+    @GetMapping("/lista/{funcionarioId}")
+    public List<RemuneracaoDTO> AllRemuneracoesByFuncionarioId(@RequestParam("funcionarioId") @Valid String funcionarioId){
+        return service.AllRemuneracoesByFuncionarioId(funcionarioId);
+    }
+
+    @GetMapping("/id")
     public RemuneracaoDTO GetById(@RequestParam("id") @Valid String id){
         return service.buscarPorId(id);
     }
@@ -25,6 +34,16 @@ public class RemuneracaoController {
     @PostMapping("/registrar")
     public RemuneracaoDTO criarRemuneracao(@RequestBody @Valid RemuneracaoManipularDTO remuneracaoManipularDTO){
         return service.criarRemuneracao(remuneracaoManipularDTO);
+    }
+
+    @PutMapping("/atualizar")
+    public RemuneracaoDTO atualizarRemuneracao(@RequestParam("id") @Valid String id, @RequestBody RemuneracaoManipularDTO remuneracaoManipularDTO){
+        return service.alterarRemuneracaoPeloId(id, remuneracaoManipularDTO);
+    }
+
+    @DeleteMapping("/excluir")
+    public void excluirRemuneracao(@RequestParam("id") @Valid String id){
+        service.excluirRemuneracao(UUID.fromString(id));
     }
 
 }

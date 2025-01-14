@@ -15,6 +15,5 @@ public class FuncionarioSetorDTO {
     private String genero;
     private LocalDate dataContratacao;
     private LocalDate dataNascimento;
-    private Double salarioBase;
     private Boolean status;
 }
