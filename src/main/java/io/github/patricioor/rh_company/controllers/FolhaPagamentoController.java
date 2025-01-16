@@ -17,10 +17,10 @@ public class FolhaPagamentoController {
         this.service = service;
     }
 
-    @GetMapping("/id")
-    public FolhaPagamentoDTO GetById(@RequestParam("id") @Valid String id){
-        return service.BuscarPorId(id);
-    }
+    //@GetMapping("/id")
+    //public FolhaPagamentoDTO GetById(@RequestParam("id") @Valid String id){
+    //    return service.BuscarPorId(id);
+    //}
 
     @PostMapping("/registrar")
     public FolhaPagamentoDTO criarFolhaPagamento(@RequestBody @Valid FolhaPagamentoManipularDTO folhaPagamentoManipularDTO){

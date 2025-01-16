@@ -5,6 +5,10 @@ import io.github.patricioor.rh_company.application.dto.FolhaPagamento.ProventoMa
 import io.github.patricioor.rh_company.domain.FolhaPagamento.Provento;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 @Service
 public class ProventoMapper {
     public Provento toProvento(ProventoDTO dto){
@@ -19,6 +23,7 @@ public class ProventoMapper {
         dto.setId(provento.getId().toString());
         dto.setDescricao(provento.getDescricao());
         dto.setValor(provento.getValor());
+        dto.setFolhaPagamentoId(provento.getFolhaPagamentoId());
 
         return dto;
     }
@@ -29,4 +34,36 @@ public class ProventoMapper {
 
         return provento;
     }
+
+    public List<Provento> toListProventoByListManipular(UUID id, List<ProventoManipularDTO> list){
+        List<Provento> newList = new ArrayList<>();
+
+        for(ProventoManipularDTO dto: list){
+            newList.add(toProventoByManipular(dto));
+        }
+
+        for(int i = 0; i < newList.size(); i++){
+            Provento prov = newList.get(i);
+            prov.setFolhaPagamentoId(id.toString());
+            newList.set(i, prov);
+        }
+
+        return newList;
+    };
+
+    public List<ProventoDTO> toListProventoDtoByListProvento(List<Provento> list){
+        List<ProventoDTO> newList = new ArrayList<>();
+
+        for(Provento prov: list){
+            newList.add(toProventoDTO(prov));
+        }
+
+        for(int i = 0; i < newList.size(); i++){
+            Provento prov = list.get(i);
+            prov.setFolhaPagamentoId(prov.getFolhaPagamentoId());
+            newList.set(i, toProventoDTO(prov));
+        }
+
+        return newList;
+    };
 }
