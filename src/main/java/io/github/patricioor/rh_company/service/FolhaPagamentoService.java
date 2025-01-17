@@ -20,8 +20,6 @@ public class FolhaPagamentoService {
     private final FolhaPagamentoMapper mapper;
     private final ProventoMapper proventoMapper;
     private final DescontoMapper descontoMapper;
-    private final IProventoRepository proventoRepository;
-    private final IDescontoRepository descontoRepository;
 
     @Autowired
     public FolhaPagamentoService(IFolhaPagamentoRepository repository, IFolhaProventoRepository folhaProventoRepository, IFolhaDescontoRepository folhaDescontoRepository, FolhaPagamentoMapper mapper, ProventoMapper proventoMapper, DescontoMapper descontoMapper, IProventoRepository proventoRepository, IDescontoRepository descontoRepository) {
@@ -30,8 +28,6 @@ public class FolhaPagamentoService {
         this.folhaDescontoRepository = folhaDescontoRepository;
         this.proventoMapper = proventoMapper;
         this.descontoMapper = descontoMapper;
-        this.proventoRepository = proventoRepository;
-        this.descontoRepository = descontoRepository;
         this.mapper = mapper;
     }
 
@@ -59,7 +55,7 @@ public class FolhaPagamentoService {
             folhaDescontoRepository.saveAll(folha.getDescontos());
         }
 
-        folha.setSalarioLiquido(folha.toSalarioLiquido());
+        folha.toSalarioLiquido();
 
         repository.save(folha);
 

@@ -12,11 +12,12 @@ import java.util.UUID;
 
 @Repository
 public interface ISetorRepository extends JpaRepository<Setor, UUID> {
-    @Query("SELECT s FROM Setor s WHERE s.nome = :nome")
-    Setor findSetorByName(String nome);
+
+    @Query(value = "SELECT * FROM setor AS s WHERE s.nome ILIKE CONCAT('%',:nome,'%')", nativeQuery = true)
+    Setor findByNome(@Param("nome") String nome);
 
     @Modifying
     @Transactional
-    @Query (value = "UPDATE Setor s SET nome = :#{#nomeSetorNovo} WHERE s.nome = :#{#nomeSetorAntigo}", nativeQuery = true)
+    @Query ("UPDATE Setor s SET s.nome = :nomeSetorNovo WHERE s.nome = :nomeSetorAntigo")
     void updateSetorByName(@Param("nomeSetorAntigo") String nomeSetorAntigo, @Param("nomeSetorNovo") String nomeSetorNovo);
 }

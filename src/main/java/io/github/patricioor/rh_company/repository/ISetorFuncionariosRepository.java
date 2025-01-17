@@ -15,7 +15,7 @@ import java.util.UUID;
 public interface ISetorFuncionariosRepository extends JpaRepository<SetorFuncionarios, UUID> {
 
     @Query(value = "SELECT funcionario_id FROM setor_funcionarios WHERE setor_id = :setorId", nativeQuery = true)
-    List<UUID> listarFuncionariosPorSetor(@Param("setorId") UUID setorId);
+    List<UUID> listarFuncionariosPorSetorId(@Param("setorId") UUID setorId);
 
     @Modifying
     @Transactional

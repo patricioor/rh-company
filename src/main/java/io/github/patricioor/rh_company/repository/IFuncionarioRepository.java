@@ -19,10 +19,9 @@ public interface IFuncionarioRepository extends JpaRepository<Funcionario, UUID>
     List<Funcionario> findFuncionariosBySetor(@Param("setorId") UUID setorId);
     @Query("SELECT f FROM Funcionario f WHERE f.status = :status")
     List<Funcionario> findFuncionariosByStatus(@Param("status")Boolean status);
-    @Query("SELECT f FROM Funcionario f WHERE f.nome ILIKE :nome")
+    @Query("SELECT f FROM Funcionario f WHERE f.nome ILIKE CONCAT('%',:nome,'%')")
     Funcionario findFuncionarioByNome(@Param("nome") String nome);
-    @Query("SELECT f FROM Funcionario f WHERE f.cpf = :cpf")
-    Funcionario findFuncionarioByCpf(@Param("cpf") String cpf);
+    Funcionario findByCpf(@Param("cpf") String cpf);
 
     @Modifying
     @Transactional

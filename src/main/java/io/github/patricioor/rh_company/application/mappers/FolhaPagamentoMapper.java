@@ -42,9 +42,7 @@ public class FolhaPagamentoMapper {
         folha.setId(UUID.randomUUID());
         folha.setDataEmissao(dto.getDataEmissao());
         folha.setPeriodoReferencia(dto.getPeriodoReferencia());
-        folha.setSalarioBruto(dto.getSalarioBruto());
         folha.setFuncionarioId(dto.getFuncionarioId());
-
 
         return folha;
     }

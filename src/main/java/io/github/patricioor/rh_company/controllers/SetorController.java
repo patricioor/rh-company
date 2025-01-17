@@ -1,5 +1,6 @@
 package io.github.patricioor.rh_company.controllers;
 
+import io.github.patricioor.rh_company.application.dto.Funcionario.FuncionarioSetorDTO;
 import io.github.patricioor.rh_company.application.dto.Setor.SetorDTO;
 import io.github.patricioor.rh_company.service.SetorService;
 import jakarta.validation.Valid;
@@ -24,16 +25,23 @@ public class SetorController {
         return service.listaSetoresNome();
     }
 
+    @GetMapping("/listaFuncionariosBySetorId")
+    public List<FuncionarioSetorDTO> listaFuncionariosBySetorId(@RequestParam("id") @Valid String id){
+        return service.listaFuncionariosPorSetorId(id);
+    }
+
     @GetMapping("/id")
     public SetorDTO BuscarSetorId(@RequestParam("id") @Valid String id){
         return service.buscarPorId(UUID.fromString(id));
-    }    @GetMapping("/nome")
+    }
+
+    @GetMapping("/nome")
     public SetorDTO BuscarSetorNome(@RequestParam("nome") @Valid String nome){
-        return service.buscarSetorPeloNome(nome);
+        return service.buscarPeloNome(nome);
     }
 
     @PostMapping("/registrar")
-    public SetorDTO criarSetor(@RequestBody @Valid String nome){
+    public SetorDTO criarSetor(@RequestParam("nome") @Valid String nome){
         return service.criarSetor(nome);
     }
 

@@ -39,7 +39,7 @@ public class FuncionarioService{
 
     public FuncionarioIdDTO buscarPorCpf (String cpf){
         try{
-            Funcionario funcionario = repository.findFuncionarioByCpf(cpf);
+            Funcionario funcionario = repository.findByCpf(cpf);
             return funcionarioMapper.toFuncionarioIdDTO(funcionario);
         } catch (ElementNotFoundException e){
             throw new ElementNotFoundException("Funcionário");
@@ -57,14 +57,14 @@ public class FuncionarioService{
 
     public FuncionarioDTO buscarPorNome (String nome){
         try {
-            Funcionario funcionario = repository.findFuncionarioByNome("%" + nome + "%");
+            Funcionario funcionario = repository.findFuncionarioByNome(nome);
             return funcionarioMapper.toFuncionarioDTO(funcionario);
         } catch (ElementNotFoundException e){
             throw new ElementNotFoundException("Funcionário");
         }
     };
 
-    public List<FuncionarioDTO> retornarFuncionariosPeloCargo(String cargo){
+    public List<FuncionarioDTO> retornarListaFuncionariosPeloCargo(String cargo){
         try {
             List<Funcionario> lista = repository.findFuncionariosByCargo(cargo);
             List<FuncionarioDTO> listaDto = new ArrayList<>();
@@ -76,7 +76,7 @@ public class FuncionarioService{
         }
     }
 
-    public List<FuncionarioSetorDTO> retornarFuncionariosPeloSetorId(UUID id){
+    public List<FuncionarioSetorDTO> retornarListaFuncionariosPeloSetorId(UUID id){
         try {
             List<Funcionario> lista = repository.findFuncionariosBySetor(id);
             List<FuncionarioSetorDTO> listaDto = new ArrayList<>();
@@ -88,7 +88,7 @@ public class FuncionarioService{
         }
     }
 
-    public List<FuncionarioDTO> retornarFuncionariosPeloStatus(Boolean status){
+    public List<FuncionarioDTO> retornarListaFuncionariosPeloStatus(Boolean status){
         try {
             List<Funcionario> lista = repository.findFuncionariosByStatus(status);
             List<FuncionarioDTO> listaDto = new ArrayList<>();
@@ -101,7 +101,7 @@ public class FuncionarioService{
     }
 
     public FuncionarioDTO criarFuncionario( String cpf, FuncionarioManipularDTO funcionarioManipularDTO){
-        if (repository.findFuncionarioByCpf(cpf) != null) {
+        if (repository.findByCpf(cpf) != null) {
             throw new ElementAlreadyExistsException("Funcionário");
         }
 
@@ -126,24 +126,34 @@ public class FuncionarioService{
 
     public FuncionarioDTO alterarSetorFuncionar(String cpf, String nomeSetor){
         try {
-            var funcionario = repository.findFuncionarioByCpf(cpf);
-            var setor = setorService.buscarSetorPeloNome(nomeSetor);
+            var funcionario = repository.findByCpf(cpf);
 
-            if(setor != null){
-                setorService.inserirFuncionarioNoSetor(UUID.fromString(setor.getId()), funcionario.getId());
+            if(funcionario == null) {
+               throw new ElementNotFoundException("Funcionário");
+            }
+            if(funcionario.getSetor() != null){
+                setorService.deletarFuncionarioDoSetor(funcionario.getSetor().getId());
             }
 
-            funcionario.setSetor(setorMapper.toSetor(setor));
+            var setor = setorMapper.toSetor(setorService.buscarPeloNome(nomeSetor));
+
+            if(setor == null){
+                throw new ElementNotFoundException("Setor");
+            }
+
+            setorService.inserirFuncionarioNoSetor(UUID.fromString(setor.getId().toString()), funcionario.getId());
+
+            funcionario.setSetor(setor);
             repository.save(funcionario);
 
             return funcionarioMapper.toFuncionarioDTO(funcionario);
         } catch (ElementNotFoundException e){
-            throw new ElementNotFoundException("Funcionario");
+            throw new ElementNotFoundException("Não foi possível fazer a alteração do setor");
         }
     }
 
     public FuncionarioDTO excluirFuncionario(String cpf){
-        var funcionario = repository.findFuncionarioByCpf(cpf);
+        var funcionario = repository.findByCpf(cpf);
         setorService.deletarFuncionarioDoSetor(funcionario.getId());
         repository.delete(funcionario);
         return funcionarioMapper.toFuncionarioDTO(funcionario);

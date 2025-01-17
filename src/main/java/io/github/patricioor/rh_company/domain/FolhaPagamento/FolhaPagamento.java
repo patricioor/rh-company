@@ -38,7 +38,7 @@ public class FolhaPagamento {
     @OneToMany
     List<Provento> proventos;
 
-    public BigDecimal toSalarioLiquido(){
+    public void toSalarioLiquido(){
         BigDecimal somatorioDesconto = BigDecimal.valueOf(0);
         BigDecimal somatorioProvento = BigDecimal.valueOf(0);
 
@@ -50,8 +50,8 @@ public class FolhaPagamento {
             somatorioProvento = somatorioProvento.add(BigDecimal.valueOf(prov.getValor()));
         }
 
-        this.salarioLiquido = this.salarioBruto.add(somatorioProvento).subtract(somatorioDesconto);
+        this.salarioBruto = this.salarioBruto.add(somatorioProvento);
 
-        return this.salarioLiquido;
+        this.salarioLiquido = this.salarioBruto.subtract(somatorioDesconto);
     }
 }
