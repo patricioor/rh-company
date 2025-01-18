@@ -30,7 +30,7 @@ public class FolhaPagamento {
     @Column(name = "salario_liquido")
     private BigDecimal salarioLiquido;
     @Column(name = "funcionario_id")
-    private String funcionarioId;
+    private UUID funcionarioId;
 
     @OneToMany
     List<Desconto> descontos;
@@ -41,17 +41,17 @@ public class FolhaPagamento {
     public void toSalarioLiquido(){
         BigDecimal somatorioDesconto = BigDecimal.valueOf(0);
         BigDecimal somatorioProvento = BigDecimal.valueOf(0);
-
-        for(Desconto desc : this.getDescontos()){
-            somatorioDesconto = somatorioDesconto.add(BigDecimal.valueOf(desc.getValor()));
-        }
+        this.salarioBruto = BigDecimal.valueOf(0);
+        this.salarioLiquido = BigDecimal.valueOf(0);
 
         for(Provento prov : this.getProventos()){
             somatorioProvento = somatorioProvento.add(BigDecimal.valueOf(prov.getValor()));
         }
-
         this.salarioBruto = this.salarioBruto.add(somatorioProvento);
 
+        for(Desconto desc : this.getDescontos()){
+            somatorioDesconto = somatorioDesconto.add(BigDecimal.valueOf(desc.getValor()));
+        }
         this.salarioLiquido = this.salarioBruto.subtract(somatorioDesconto);
     }
 }

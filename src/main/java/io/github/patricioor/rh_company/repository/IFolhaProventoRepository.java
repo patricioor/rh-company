@@ -1,6 +1,6 @@
 package io.github.patricioor.rh_company.repository;
 
-import io.github.patricioor.rh_company.domain.FolhaPagamento.Provento;
+import io.github.patricioor.rh_company.domain.tabelas_relacionamentos.FolhaProvento;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface IFolhaProventoRepository extends JpaRepository<Provento, UUID> {
-    @Query(value = "SELECT provento_id FROM folha_provento WHERE folha_pagamento_id = :folhaPagamentoId", nativeQuery = true)
+public interface IFolhaProventoRepository extends JpaRepository<FolhaProvento, UUID> {
+    @Query(value = "SELECT proventos_id FROM folha_pagamento_proventos WHERE folha_pagamento_id = :folhaPagamentoId", nativeQuery = true)
     List<UUID> listarProventoPorFolhaPagamentoId(@Param("folhaPagamentoId") UUID folhaPagamentoId);
 
     @Modifying
