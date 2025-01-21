@@ -16,7 +16,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Desconto {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     @Column(name = "descricao")
     private String descricao;

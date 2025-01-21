@@ -29,6 +29,7 @@ public class DescontoMapper {
     }
     public Desconto toDescontoByManipular(DescontoManipularDTO dto){
         Desconto desconto = new Desconto();
+        desconto.setId(UUID.randomUUID());
         desconto.setDescricao(dto.getDescricao());
         desconto.setValor(dto.getValor());
 
@@ -39,13 +40,12 @@ public class DescontoMapper {
         List<Desconto> newList = new ArrayList<>();
 
         for(DescontoManipularDTO dto: list){
-            newList.add(toDescontoByManipular(dto));
-        }
-
-        for(int i = 0; i < newList.size();i++){
-            Desconto desc = newList.get(i);
+            Desconto desc = new Desconto();
+            desc.setId(UUID.randomUUID());
+            desc.setValor(dto.getValor());
+            desc.setDescricao(dto.getDescricao());
             desc.setFolhaPagamentoId(id.toString());
-            newList.set(i, desc);
+            newList.add(desc);
         }
 
         return newList;
