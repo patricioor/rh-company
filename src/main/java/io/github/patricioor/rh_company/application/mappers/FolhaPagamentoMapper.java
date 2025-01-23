@@ -14,7 +14,7 @@ import java.util.UUID;
 public class FolhaPagamentoMapper {
     public FolhaPagamento toFolhaPagamento(FolhaPagamentoDTO dto){
         FolhaPagamento folha = new FolhaPagamento();
-        folha.setId(UUID.randomUUID());
+        folha.setId(dto.getId());
         folha.setDataEmissao(dto.getDataEmissao());
         folha.setPeriodoReferencia(dto.getPeriodoReferencia());
         folha.setSalarioBruto(dto.getSalarioBruto());

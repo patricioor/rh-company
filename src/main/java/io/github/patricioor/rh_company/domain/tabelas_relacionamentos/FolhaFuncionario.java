@@ -24,6 +24,7 @@ public class FolhaFuncionario {
     @Column(name = "funcionario_id",nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private UUID funcionarioId;
+
     @Column(name = "folha_pagamento_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private UUID folhaPagamentoId;

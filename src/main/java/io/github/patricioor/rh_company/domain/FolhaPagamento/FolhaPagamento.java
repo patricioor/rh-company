@@ -19,7 +19,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class FolhaPagamento {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     @Column(name = "data_emissao")
     private LocalDate dataEmissao;

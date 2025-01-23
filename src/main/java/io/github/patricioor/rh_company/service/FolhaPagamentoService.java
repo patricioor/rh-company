@@ -10,6 +10,7 @@ import io.github.patricioor.rh_company.domain.FolhaPagamento.FolhaPagamento;
 import io.github.patricioor.rh_company.domain.FolhaPagamento.Provento;
 import io.github.patricioor.rh_company.domain.exception.ElementNotFoundException;
 import io.github.patricioor.rh_company.domain.tabelas_relacionamentos.FolhaDesconto;
+import io.github.patricioor.rh_company.domain.tabelas_relacionamentos.FolhaFuncionario;
 import io.github.patricioor.rh_company.domain.tabelas_relacionamentos.FolhaProvento;
 import io.github.patricioor.rh_company.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,8 @@ public class FolhaPagamentoService {
     private final IFolhaPagamentoRepository repository;
     private final FolhaPagamentoMapper mapper;
 
+    private final IFolhaFuncionarioRepository folhaFuncionarioRepository;
+
     private final IFolhaProventoRepository folhaProventoRepository;
     private final IProventoRepository proventoRepository;
     private final ProventoMapper proventoMapper;
@@ -33,8 +36,9 @@ public class FolhaPagamentoService {
     private final DescontoMapper descontoMapper;
 
     @Autowired
-    public FolhaPagamentoService(IFolhaPagamentoRepository repository, IFolhaProventoRepository folhaProventoRepository, IFolhaDescontoRepository folhaDescontoRepository, FolhaPagamentoMapper mapper, ProventoMapper proventoMapper, DescontoMapper descontoMapper, IProventoRepository proventoRepository, IDescontoRepository descontoRepository, IProventoRepository proventoRepository1, IDescontoRepository descontoRepository1) {
+    public FolhaPagamentoService(IFolhaPagamentoRepository repository, IFolhaFuncionarioRepository folhaFuncionarioRepository, IFolhaProventoRepository folhaProventoRepository, IFolhaDescontoRepository folhaDescontoRepository, FolhaPagamentoMapper mapper, ProventoMapper proventoMapper, DescontoMapper descontoMapper, IProventoRepository proventoRepository, IDescontoRepository descontoRepository, IProventoRepository proventoRepository1, IDescontoRepository descontoRepository1) {
         this.repository = repository;
+        this.folhaFuncionarioRepository = folhaFuncionarioRepository;
         this.folhaProventoRepository = folhaProventoRepository;
         this.folhaDescontoRepository = folhaDescontoRepository;
         this.proventoMapper = proventoMapper;
@@ -81,32 +85,50 @@ public class FolhaPagamentoService {
         );
 
         if(!folha.getProventos().isEmpty()){
-            for(Provento provento: folha.getProventos()){
-                var folhaProvento = new FolhaProvento();
-                folhaProvento.setId(UUID.randomUUID());
-                folhaProvento.setFolhaPagamentoId(folha.getId());
-                folhaProvento.setProventoId(provento.getId());
-                folhaProventoRepository.save(folhaProvento);
-            }
+            proventoRepository.saveAll(folha.getProventos());
         }
 
         if(!folha.getDescontos().isEmpty()) {
-            for(Desconto desconto: folha.getDescontos()){
-                var folhaDesconto = new FolhaDesconto();
-                folhaDesconto.setId(UUID.randomUUID());
-                folhaDesconto.setFolhaPagamentoId(folha.getId());
-                folhaDesconto.setDescontoId(desconto.getId());
-                folhaDescontoRepository.save(folhaDesconto);
-            }
+            descontoRepository.saveAll(folha.getDescontos());
         }
 
         folha.toSalarioLiquido();
-
         repository.save(folha);
+
+        persistindoTabelasDeRelacionamentos(folha);
 
         return mapper.toFolhaPagamentoDto(folha,
                 descontoMapper.toListDescontoDtoByListDesconto(folha.getDescontos()),
                 proventoMapper.toListProventoDtoByListProvento(folha.getProventos())
         );
+    }
+
+    private void persistindoTabelasDeRelacionamentos(FolhaPagamento folha) {
+        List<FolhaProvento> folhaProventos = folha.getProventos().stream().map(provento -> {
+            var folhaProvento = new FolhaProvento();
+            folhaProvento.setId(UUID.randomUUID());
+            folhaProvento.setFolhaPagamentoId(folha.getId());
+            folhaProvento.setProventoId(provento.getId());
+            return folhaProvento;
+        }).toList();
+
+        folhaProventoRepository.saveAll(folhaProventos);
+
+        List<FolhaDesconto> folhaDescontos = folha.getDescontos().stream().map(desconto -> {
+            var folhaDesconto = new FolhaDesconto();
+            folhaDesconto.setId(UUID.randomUUID());
+            folhaDesconto.setFolhaPagamentoId(folha.getId());
+            folhaDesconto.setDescontoId(desconto.getId());
+            return folhaDesconto;
+        }).toList();
+
+        folhaDescontoRepository.saveAll(folhaDescontos);
+
+        var folhaFunc = new FolhaFuncionario();
+        folhaFunc.setId(UUID.randomUUID());
+        folhaFunc.setFolhaPagamentoId(folha.getId());
+        folhaFunc.setFuncionarioId(folha.getFuncionarioId());
+
+        folhaFuncionarioRepository.save(folhaFunc);
     }
 }
