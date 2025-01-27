@@ -66,7 +66,7 @@ public class FuncionarioService{
 
     public List<FuncionarioDTO> retornarListaFuncionariosPeloCargo(String cargo){
         try {
-            List<Funcionario> lista = repository.findFuncionariosByCargo(cargo);
+            List<Funcionario> lista = repository.findListFuncionariosByCargo(cargo);
             List<FuncionarioDTO> listaDto = new ArrayList<>();
             for(Funcionario funcionario: lista)
                 listaDto.add(funcionarioMapper.toFuncionarioDTO(funcionario));
@@ -78,7 +78,7 @@ public class FuncionarioService{
 
     public List<FuncionarioSetorDTO> retornarListaFuncionariosPeloSetorId(UUID id){
         try {
-            List<Funcionario> lista = repository.findFuncionariosBySetor(id);
+            List<Funcionario> lista = repository.findListFuncionariosBySetor(id);
             List<FuncionarioSetorDTO> listaDto = new ArrayList<>();
             for(Funcionario funcionario: lista)
                 listaDto.add(funcionarioMapper.toFuncionarioSetorDtoByFuncDTO(funcionarioMapper.toFuncionarioDTO(funcionario)));
@@ -90,7 +90,7 @@ public class FuncionarioService{
 
     public List<FuncionarioDTO> retornarListaFuncionariosPeloStatus(Boolean status){
         try {
-            List<Funcionario> lista = repository.findFuncionariosByStatus(status);
+            List<Funcionario> lista = repository.findListFuncionariosByStatus(status);
             List<FuncionarioDTO> listaDto = new ArrayList<>();
             for(Funcionario funcionario: lista)
                 listaDto.add(funcionarioMapper.toFuncionarioDTO(funcionario));
@@ -150,6 +150,12 @@ public class FuncionarioService{
         } catch (ElementNotFoundException e){
             throw new ElementNotFoundException("Não foi possível fazer a alteração do setor");
         }
+    }
+
+    public void excluirFuncionarioDoSetor(UUID id){
+        var func = repository.findById(id).orElseThrow(() -> new ElementNotFoundException("Funcionário"));
+        func.setSetor(null);
+        repository.updateFuncionarioByCpf(func);
     }
 
     public FuncionarioDTO excluirFuncionario(String cpf){
