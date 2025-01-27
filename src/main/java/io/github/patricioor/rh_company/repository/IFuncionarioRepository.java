@@ -13,12 +13,12 @@ import java.util.UUID;
 
 @Repository
 public interface IFuncionarioRepository extends JpaRepository<Funcionario, UUID> {
-    @Query("SELECT f FROM Funcionario f WHERE f.cargo = :cargo")
-    List<Funcionario> findFuncionariosByCargo(@Param("cargo") String cargo);
+    @Query("SELECT f FROM Funcionario f WHERE f.cargo ILIKE CONCAT('%', :cargo,'%')")
+    List<Funcionario> findListFuncionariosByCargo(@Param("cargo") String cargo);
     @Query("SELECT f FROM Funcionario f WHERE f.setor.id = :setorId")
-    List<Funcionario> findFuncionariosBySetor(@Param("setorId") UUID setorId);
+    List<Funcionario> findListFuncionariosBySetor(@Param("setorId") UUID setorId);
     @Query("SELECT f FROM Funcionario f WHERE f.status = :status")
-    List<Funcionario> findFuncionariosByStatus(@Param("status")Boolean status);
+    List<Funcionario> findListFuncionariosByStatus(@Param("status")Boolean status);
     @Query("SELECT f FROM Funcionario f WHERE f.nome ILIKE CONCAT('%',:nome,'%')")
     Funcionario findFuncionarioByNome(@Param("nome") String nome);
     Funcionario findByCpf(@Param("cpf") String cpf);
