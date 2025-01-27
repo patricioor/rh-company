@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Repository
 public interface IFolhaProventoRepository extends JpaRepository<FolhaProvento, UUID> {
-    @Query(value = "SELECT proventos_id FROM folha_pagamento_proventos WHERE folha_pagamento_id = :folhaPagamentoId", nativeQuery = true)
+    @Query("SELECT proventoId FROM FolhaProvento WHERE folhaPagamentoId = :folhaPagamentoId")
     List<UUID> listarProventoPorFolhaPagamentoId(@Param("folhaPagamentoId") UUID folhaPagamentoId);
 
     @Modifying

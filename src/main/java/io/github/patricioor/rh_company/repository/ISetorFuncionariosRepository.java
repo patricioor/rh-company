@@ -24,6 +24,11 @@ public interface ISetorFuncionariosRepository extends JpaRepository<SetorFuncion
 
     @Modifying
     @Transactional
-    @Query(value = "DELETE FROM setor_funcionarios WHERE setor_funcionarios.funcionario_id = (:funcionarioId)", nativeQuery = true)
-    void deleteSetorFuncionariosById(@Param("funcionarioId") UUID funcionarioId);
+    @Query(value = "DELETE FROM setor_funcionarios WHERE funcionario_id = (:funcionarioId)", nativeQuery = true)
+    void deleteSetorFuncionariosByFuncionarioId(@Param("funcionarioId") UUID funcionarioId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE FROM setor_funcionarios WHERE setor_funcionarios.setor_id = (:setorId)", nativeQuery = true)
+    void deleteSetorFuncionariosBySetorId(@Param("setorId") UUID setorId);
 }
