@@ -67,7 +67,7 @@ public class SetorService {
 
         var setorDto = setorMapper.toSetorDto(setor);
 
-        var listaFuncionarios = funcionarioRepository.findFuncionariosBySetor(setor.getId());
+        var listaFuncionarios = funcionarioRepository.findListFuncionariosBySetor(setor.getId());
         List<FuncionarioSetorDTO> listaFuncionariosSetorDto = new ArrayList<>();
 
         for(Funcionario funcionario : listaFuncionarios){
@@ -88,7 +88,7 @@ public class SetorService {
         var setorDto = setorMapper.toSetorDto(setor);
         setorDto.setId(setor.getId().toString());
 
-        var listaFuncionarios = funcionarioRepository.findFuncionariosBySetor(setor.getId());
+        var listaFuncionarios = funcionarioRepository.findListFuncionariosBySetor(setor.getId());
         List<FuncionarioSetorDTO> listaFuncionariosSetorDto = new ArrayList<>();
 
         for(Funcionario funcionario : listaFuncionarios){
@@ -112,7 +112,7 @@ public class SetorService {
 
     public SetorDTO atualizarSetor(String nomeSetorAntigo, String nomeSetorNovo){
         var setorDto = buscarPeloNome(nomeSetorAntigo);
-        var listaFuncionarios = funcionarioRepository.findFuncionariosBySetor(UUID.fromString(setorDto.getId()));
+        var listaFuncionarios = funcionarioRepository.findListFuncionariosBySetor(UUID.fromString(setorDto.getId()));
         List<FuncionarioSetorDTO> listaFuncionariosSetorDto = new ArrayList<>();
         repository.updateSetorByName(setorDto.getNome(), nomeSetorNovo);
 
@@ -128,17 +128,22 @@ public class SetorService {
     public void apagarSetorPeloId(String id){
         var setor = repository.findById(UUID.fromString(id))
                 .orElseThrow(() -> new ElementNotFoundException("Setor não encontrado."));
+        for(Funcionario func : setor.getFuncionarios()) {
+            deletarFuncionarioDoSetor(func.getId());
+        }
+
         repository.deleteById(setor.getId());
     }
 
     public void inserirFuncionarioNoSetor(UUID setorId, UUID funcionarioId) {
         Setor setor = repository.findById(setorId).orElseThrow(() -> new ElementNotFoundException("Setor"));
         Funcionario funcionario = funcionarioRepository.findById(funcionarioId).orElseThrow(() -> new ElementNotFoundException("Funcionário"));
-        setorFuncionariosRepository.deleteSetorFuncionariosById(funcionarioId);
+        setorFuncionariosRepository.deleteSetorFuncionariosByFuncionarioId(funcionarioId);
         setorFuncionariosRepository.inserirFuncionarioNoSetor(setor.getId(), funcionario.getId());
     }
 
     public void deletarFuncionarioDoSetor(UUID funcionarioId) {
-        setorFuncionariosRepository.deleteSetorFuncionariosById(funcionarioId);
+
+        setorFuncionariosRepository.deleteSetorFuncionariosByFuncionarioId(funcionarioId);
     }
 }
