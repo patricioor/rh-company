@@ -13,6 +13,7 @@ import java.util.UUID;
 public class ProventoMapper {
     public Provento toProvento(ProventoDTO dto){
         Provento provento = new Provento();
+        provento.setId(UUID.randomUUID());
         provento.setDescricao(dto.getDescricao());
         provento.setValor(dto.getValor());
 
@@ -29,6 +30,7 @@ public class ProventoMapper {
     }
     public Provento toProventoByManipular(ProventoManipularDTO dto){
         Provento provento = new Provento();
+        provento.setId(UUID.randomUUID());
         provento.setDescricao(dto.getDescricao());
         provento.setValor(dto.getValor());
 
@@ -39,13 +41,12 @@ public class ProventoMapper {
         List<Provento> newList = new ArrayList<>();
 
         for(ProventoManipularDTO dto: list){
-            newList.add(toProventoByManipular(dto));
-        }
-
-        for(int i = 0; i < newList.size(); i++){
-            Provento prov = newList.get(i);
+            Provento prov = new Provento();
+            prov.setId(UUID.randomUUID());
+            prov.setValor(dto.getValor());
+            prov.setDescricao(dto.getDescricao());
             prov.setFolhaPagamentoId(id.toString());
-            newList.set(i, prov);
+            newList.add(prov);
         }
 
         return newList;

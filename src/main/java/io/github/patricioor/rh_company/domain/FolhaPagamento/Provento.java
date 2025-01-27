@@ -16,7 +16,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Provento {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     @Column(name = "descricao")
     private String descricao;
