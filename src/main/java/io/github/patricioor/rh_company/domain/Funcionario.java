@@ -1,5 +1,6 @@
 package io.github.patricioor.rh_company.domain;
 
+import io.github.patricioor.rh_company.domain.FolhaPagamento.FolhaPagamento;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -9,6 +10,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -42,6 +45,9 @@ public class Funcionario {
     @NotNull
     @Column(name = "status")
     private Boolean status;
+
+    @OneToMany(mappedBy = "funcionario", cascade = CascadeType.ALL)
+    private List<FolhaPagamento> folhaPagamentos = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "setor_id", referencedColumnName = "id")
