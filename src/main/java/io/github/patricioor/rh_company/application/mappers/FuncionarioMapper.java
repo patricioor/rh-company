@@ -42,6 +42,10 @@ public class FuncionarioMapper {
                 dto.setSetor(setorManipularDTO);
             }
 
+            if (!funcionario.getFolhaPagamentos().isEmpty()){
+                dto.setListaFolhaPagamento(funcionario.getFolhaPagamentos().stream().map(folhaPagamento -> folhaPagamento.getId().toString()).toList());
+            }
+
             return dto;
         } catch ( ElementNotFoundException e){
             throw new ElementNotFoundException("Funcionário");
