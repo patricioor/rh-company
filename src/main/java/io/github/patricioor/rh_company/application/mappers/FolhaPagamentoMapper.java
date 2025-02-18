@@ -19,7 +19,6 @@ public class FolhaPagamentoMapper {
         folha.setPeriodoReferencia(dto.getPeriodoReferencia());
         folha.setSalarioBruto(dto.getSalarioBruto());
         folha.setSalarioLiquido(dto.getSalarioLiquido());
-        folha.setFuncionarioId(UUID.fromString(dto.getFuncionarioId()));
 
         return folha;
     }
@@ -30,7 +29,7 @@ public class FolhaPagamentoMapper {
         dto.setPeriodoReferencia(folha.getPeriodoReferencia());
         dto.setSalarioBruto(folha.getSalarioBruto());
         dto.setSalarioLiquido(folha.getSalarioLiquido());
-        dto.setFuncionarioId(folha.getFuncionarioId().toString());
+        dto.setFuncionarioId(folha.getFuncionario().getId().toString());
         dto.setDescontos(listDesc);
         dto.setProventos(listProv);
 
@@ -42,7 +41,6 @@ public class FolhaPagamentoMapper {
         folha.setId(UUID.randomUUID());
         folha.setDataEmissao(dto.getDataEmissao());
         folha.setPeriodoReferencia(dto.getPeriodoReferencia());
-        folha.setFuncionarioId(UUID.fromString(dto.getFuncionarioId()));
 
         return folha;
     }
