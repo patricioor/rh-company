@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,4 +19,5 @@ public class FuncionarioDTO {
     private LocalDate dataNascimento;
     private Boolean status;
     private SetorManipularDTO setor;
+    private List<String> listaFolhaPagamento;
 }
