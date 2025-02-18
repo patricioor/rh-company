@@ -24,7 +24,8 @@ public class Setor {
     @NotBlank
     @Column(name = "nome")
     private String nome;
-    @OneToMany
+
+    @OneToMany(mappedBy = "setor", cascade = CascadeType.ALL)
     @Column(name = "funcionarios")
     List<Funcionario> funcionarios;
 }
