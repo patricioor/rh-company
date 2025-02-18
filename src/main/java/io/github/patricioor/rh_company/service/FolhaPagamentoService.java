@@ -4,10 +4,12 @@ import io.github.patricioor.rh_company.application.dto.FolhaPagamento.FolhaPagam
 import io.github.patricioor.rh_company.application.dto.FolhaPagamento.FolhaPagamentoManipularDTO;
 import io.github.patricioor.rh_company.application.mappers.DescontoMapper;
 import io.github.patricioor.rh_company.application.mappers.FolhaPagamentoMapper;
+import io.github.patricioor.rh_company.application.mappers.FuncionarioMapper;
 import io.github.patricioor.rh_company.application.mappers.ProventoMapper;
 import io.github.patricioor.rh_company.domain.FolhaPagamento.Desconto;
 import io.github.patricioor.rh_company.domain.FolhaPagamento.FolhaPagamento;
 import io.github.patricioor.rh_company.domain.FolhaPagamento.Provento;
+import io.github.patricioor.rh_company.domain.Funcionario;
 import io.github.patricioor.rh_company.domain.exception.ElementNotFoundException;
 import io.github.patricioor.rh_company.domain.tabelas_relacionamentos.FolhaDesconto;
 import io.github.patricioor.rh_company.domain.tabelas_relacionamentos.FolhaFuncionario;
@@ -35,8 +37,12 @@ public class FolhaPagamentoService {
     private final IDescontoRepository descontoRepository;
     private final DescontoMapper descontoMapper;
 
+    private final CalcularSalarioService calcularSalarioService;
+
+    private final IFuncionarioRepository funcionarioRepository;
+
     @Autowired
-    public FolhaPagamentoService(IFolhaPagamentoRepository repository, IFolhaFuncionarioRepository folhaFuncionarioRepository, IFolhaProventoRepository folhaProventoRepository, IFolhaDescontoRepository folhaDescontoRepository, FolhaPagamentoMapper mapper, ProventoMapper proventoMapper, DescontoMapper descontoMapper, IProventoRepository proventoRepository, IDescontoRepository descontoRepository, IProventoRepository proventoRepository1, IDescontoRepository descontoRepository1) {
+    public FolhaPagamentoService(IFolhaPagamentoRepository repository, IFolhaFuncionarioRepository folhaFuncionarioRepository, IFolhaProventoRepository folhaProventoRepository, IFolhaDescontoRepository folhaDescontoRepository, FolhaPagamentoMapper mapper, ProventoMapper proventoMapper, DescontoMapper descontoMapper, IProventoRepository proventoRepository1, IDescontoRepository descontoRepository1, CalcularSalarioService calcularSalarioService, IFuncionarioRepository funcionarioRepository, FuncionarioMapper funcionarioMapper) {
         this.repository = repository;
         this.folhaFuncionarioRepository = folhaFuncionarioRepository;
         this.folhaProventoRepository = folhaProventoRepository;
@@ -46,6 +52,8 @@ public class FolhaPagamentoService {
         this.mapper = mapper;
         this.proventoRepository = proventoRepository1;
         this.descontoRepository = descontoRepository1;
+        this.calcularSalarioService = calcularSalarioService;
+        this.funcionarioRepository = funcionarioRepository;
     }
 
     public FolhaPagamentoDTO BuscarPorId(String id){
@@ -73,6 +81,10 @@ public class FolhaPagamentoService {
     public FolhaPagamentoDTO criarFolhaPagamento(FolhaPagamentoManipularDTO folhaPagamentoManipularDTO){
         FolhaPagamento folha = mapper.toFolhaPagamentoByManipular(folhaPagamentoManipularDTO);
 
+        Funcionario funcionario = funcionarioRepository.findById(UUID.fromString(folhaPagamentoManipularDTO.getFuncionarioId())).orElseThrow(() -> new ElementNotFoundException("Funcionário não encontrado"));
+
+        folha.setFuncionario(funcionario);
+
         folha.setDescontos(
                 folhaPagamentoManipularDTO.getDescontos() != null ?
                         descontoMapper.toListDescontoByListManipular(folha.getId(), folhaPagamentoManipularDTO.getDescontos()) :
@@ -92,7 +104,8 @@ public class FolhaPagamentoService {
             descontoRepository.saveAll(folha.getDescontos());
         }
 
-        folha.toSalarioLiquido();
+        folha.setSalarioBruto(calcularSalarioService.calcularSalarioBruto(folha.getProventos()));
+        folha.setSalarioLiquido(calcularSalarioService.calcularSalarioLiquido(folha.getDescontos(), folha.getSalarioBruto()));
         repository.save(folha);
 
         persistindoTabelasDeRelacionamentos(folha);
@@ -127,7 +140,7 @@ public class FolhaPagamentoService {
         var folhaFunc = new FolhaFuncionario();
         folhaFunc.setId(UUID.randomUUID());
         folhaFunc.setFolhaPagamentoId(folha.getId());
-        folhaFunc.setFuncionarioId(folha.getFuncionarioId());
+        folhaFunc.setFuncionarioId(folha.getFuncionario().getId());
 
         folhaFuncionarioRepository.save(folhaFunc);
     }
