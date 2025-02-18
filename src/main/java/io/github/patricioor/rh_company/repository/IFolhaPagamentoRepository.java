@@ -11,6 +11,6 @@ import java.util.UUID;
 
 @Repository
 public interface IFolhaPagamentoRepository extends JpaRepository<FolhaPagamento, UUID> {
-    @Query("SELECT fp FROM FolhaPagamento fp WHERE fp.funcionarioId = :funcionarioId")
+    @Query("SELECT fp FROM FolhaPagamento fp WHERE fp.funcionario.id = :funcionarioId")
     List<FolhaPagamento> findFolhaPagamentoByFuncionarioId(@Param("funcionarioId") UUID funcionarioId);
 }
