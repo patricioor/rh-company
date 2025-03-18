@@ -17,6 +17,7 @@ import io.github.patricioor.rh_company.domain.tabelas_relacionamentos.FolhaProve
 import io.github.patricioor.rh_company.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +78,7 @@ public class FolhaPagamentoService {
                 proventoMapper.toListProventoDtoByListProvento(listProventos));
     }
 
-
+    @Transactional
     public FolhaPagamentoDTO criarFolhaPagamento(FolhaPagamentoManipularDTO folhaPagamentoManipularDTO){
         FolhaPagamento folha = mapper.toFolhaPagamentoByManipular(folhaPagamentoManipularDTO);
 
