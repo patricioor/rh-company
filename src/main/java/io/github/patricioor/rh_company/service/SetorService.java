@@ -12,6 +12,7 @@ import io.github.patricioor.rh_company.repository.ISetorFuncionariosRepository;
 import io.github.patricioor.rh_company.repository.ISetorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +53,7 @@ public class SetorService {
                 Funcionario funcionario = funcionarioRepository.findById(uuid).orElseThrow(() -> new ElementNotFoundException("Funcionario"));
 
                 dtoList.add(funcionarioMapper.toFuncionarioSetorDtoByFuncDTO(funcionarioMapper.toFuncionarioDTO(funcionario)));
-        }
+            }
 
         return dtoList;
     }
@@ -125,6 +126,7 @@ public class SetorService {
         return setorDto;
     }
 
+    @Transactional
     public void apagarSetorPeloId(String id){
         var setor = repository.findById(UUID.fromString(id))
                 .orElseThrow(() -> new ElementNotFoundException("Setor não encontrado."));
